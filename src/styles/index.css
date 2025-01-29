@@ -1,0 +1,21 @@
+/* Any global custom CSS can go here. Example: */
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color:  #f8f9fa;
+    
+  }
+  
+  /* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Dark Mode Support */
+@layer base {
+  .dark {
+    --tw-bg-opacity: 1;
+    background-color: rgba(26, 32, 44, var(--tw-bg-opacity)); /* Example dark background */
+  }
+}
