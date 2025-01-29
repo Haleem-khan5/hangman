@@ -75,7 +75,6 @@ const StartGame: React.FC = () => {
   const [guessedLetters, setGuessedLetters] = useState<string[]>([]);
   const [wrongGuesses, setWrongGuesses] = useState(0);
   const [gameOver, setGameOver] = useState(false);
-  const [gameWon, setGameWon] = useState(false);
 
   // Hints system state variables
   const [hintsUsed, setHintsUsed] = useState(0);
@@ -101,8 +100,8 @@ const StartGame: React.FC = () => {
     if (timeLeft <= 0) {
       // Time's up, game over
       setGameOver(true);
-      setLosses((prev) => prev + 1);
-      setGamesPlayed((prev) => prev + 1);
+      setLosses(prev => prev + 1);
+      setGamesPlayed(prev => prev + 1);
       addScore(0); // Mark as active without adding points
       toast.error(`⏰ Time's up! The word was "${word.toUpperCase()}".`, { autoClose: 5000 });
       setTimerActive(false); // Stop the timer
@@ -110,7 +109,7 @@ const StartGame: React.FC = () => {
     }
 
     const timerId = setInterval(() => {
-      setTimeLeft((prev) => prev - 1);
+      setTimeLeft(prev => prev - 1);
     }, 1000);
 
     return () => clearInterval(timerId);
@@ -121,15 +120,14 @@ const StartGame: React.FC = () => {
     if (!word) return;
 
     const wordLetters = word.toLowerCase().split('');
-    const allGuessed = wordLetters.every((letter) => guessedLetters.includes(letter));
+    const allGuessed = wordLetters.every(letter => guessedLetters.includes(letter));
 
     if (allGuessed && !gameOver) { // Ensure this runs only once
-      setGameWon(true);
       setGameOver(true);
-      setScore((prev) => prev + 10); // Example: +10 points for winning
-      setTotalPoints((prev) => prev + 10);
-      setWins((prev) => prev + 1);
-      setGamesPlayed((prev) => prev + 1);
+      setScore(prev => prev + 10); // Example: +10 points for winning
+      setTotalPoints(prev => prev + 10);
+      setWins(prev => prev + 1);
+      setGamesPlayed(prev => prev + 1);
       addScore(10); // Add points and mark as active
       toast.success('🎉 Congratulations! You guessed the word!', { autoClose: 5000 });
       setTimerActive(false); // Stop the timer
@@ -140,8 +138,8 @@ const StartGame: React.FC = () => {
   useEffect(() => {
     if (wrongGuesses >= MAX_WRONG && !gameOver) { // Ensure this runs only once
       setGameOver(true);
-      setLosses((prev) => prev + 1);
-      setGamesPlayed((prev) => prev + 1);
+      setLosses(prev => prev + 1);
+      setGamesPlayed(prev => prev + 1);
       addScore(0); // Mark as active without adding points
       toast.error(`😢 Game Over! The word was "${word.toUpperCase()}".`, { autoClose: 5000 });
       setTimerActive(false); // Stop the timer
@@ -152,17 +150,17 @@ const StartGame: React.FC = () => {
   const handleGuess = (letter: string) => {
     if (gameOver || guessedLetters.includes(letter)) return;
 
-    setGuessedLetters((prev) => [...prev, letter]);
+    setGuessedLetters(prev => [...prev, letter]);
 
     if (word.includes(letter)) {
       // Correct guess
-      setScore((prev) => prev + 2); // Example: +2 points for correct guess
-      setTotalPoints((prev) => prev + 2);
+      setScore(prev => prev + 2); // Example: +2 points for correct guess
+      setTotalPoints(prev => prev + 2);
       addScore(2); // Add points and mark as active
       toast.success(`✅ Correct! "${letter.toUpperCase()}" is in the word.`, { autoClose: 3000 });
     } else {
       // Wrong guess
-      setWrongGuesses((prev) => prev + 1);
+      setWrongGuesses(prev => prev + 1);
       toast.error(`❌ Wrong! "${letter.toUpperCase()}" is not in the word.`, { autoClose: 3000 });
     }
   };
@@ -175,7 +173,7 @@ const StartGame: React.FC = () => {
     const unguessedLetters = word
       .toLowerCase()
       .split('')
-      .filter((letter) => !guessedLetters.includes(letter) && letter !== '-');
+      .filter(letter => !guessedLetters.includes(letter) && letter !== '-');
 
     if (unguessedLetters.length === 0) {
       toast.info('All letters have already been revealed!', { autoClose: 3000 });
@@ -184,10 +182,10 @@ const StartGame: React.FC = () => {
 
     // Reveal a random unguessed letter
     const randomLetter = unguessedLetters[Math.floor(Math.random() * unguessedLetters.length)];
-    setGuessedLetters((prev) => [...prev, randomLetter]);
-    setHintsUsed((prev) => prev + 1);
-    setScore((prev) => prev - 5); // Example: -5 points for using a hint
-    setTotalPoints((prev) => prev - 5);
+    setGuessedLetters(prev => [...prev, randomLetter]);
+    setHintsUsed(prev => prev + 1);
+    setScore(prev => prev - 5); // Example: -5 points for using a hint
+    setTotalPoints(prev => prev - 5);
     addScore(-5); // Deduct points and mark as active
     toast.info(`💡 Hint: The letter "${randomLetter.toUpperCase()}" is in the word.`, { autoClose: 3000 });
   };
@@ -198,7 +196,6 @@ const StartGame: React.FC = () => {
     setGuessedLetters([]);
     setWrongGuesses(0);
     setGameOver(false);
-    setGameWon(false);
     setScore(0);
     setHintsUsed(0);
     setTimeLeft(INITIAL_TIME);
@@ -293,7 +290,7 @@ const StartGame: React.FC = () => {
   const renderKeyboard = () => {
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
-    return letters.map((letter) => (
+    return letters.map(letter => (
       <button
         key={letter}
         onClick={() => handleGuess(letter.toLowerCase())}
@@ -472,7 +469,6 @@ const StartGame: React.FC = () => {
             pauseOnFocusLoss
             draggable
             pauseOnHover
-            // Removed containerId for simplicity
             className="absolute top-0 right-0 mt-4 mr-4 z-20"
             toastClassName="bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 shadow-lg rounded-lg"
           />
