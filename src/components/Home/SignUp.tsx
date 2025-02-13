@@ -45,7 +45,7 @@ const Signup: React.FC<SignupProps> = ({ onSuccess }) => {
       // Call the onSuccess callback if provided
       if (onSuccess) onSuccess();
       // Redirect to StartGame page
-      navigate('/start-game');
+      navigate('/login');
     }
   };
 

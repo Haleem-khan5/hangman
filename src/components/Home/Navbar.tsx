@@ -1,6 +1,6 @@
 // src/components/Navbar.tsx
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../Shared/AuthContext';
 import Button from '../Shared/Button';
 import { FaLeaf } from 'react-icons/fa'; // Leaf icon for visual enhancement
@@ -9,7 +9,15 @@ import { motion } from 'framer-motion';
 const Navbar: React.FC = () => {
   const authContext = useAuth();
   const currentUser = authContext?.currentUser;
-  const logout = authContext?.logout;
+  const navigate = useNavigate();
+  //  after logout it should redirect to login page
+  const logout = () => {
+    authContext?.logout();
+    // Or use the navigate function from react-router-dom to redirect to the home page
+    navigate('/');
+
+  }
+
   const location = useLocation(); // To determine active link
 
   // Function to determine if a link is active
